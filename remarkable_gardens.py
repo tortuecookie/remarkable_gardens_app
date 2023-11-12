@@ -9,7 +9,7 @@ from streamlit_folium import folium_static
 st.set_page_config(layout = "wide")
 
 # providing a title
-st.title('Remarkable gardens of France')
+st.title('Gardens of France')
 
 # making short intro
 st.markdown("""
@@ -18,7 +18,7 @@ st.markdown("""
 
 # creating the section with the purpose of the app
 st.header('Purpose', divider = 'rainbow')
-github_url = "https://github.com/tortuecookie"
+github_url = "https://github.com/tortuecookie/remarkable_gardens_app"
 st.markdown("""
     The purpose of this app is to illustrate the use of the *folium* Python package to visualize geospatial data using Python.
     This app was built using *streamlit*.
@@ -78,7 +78,7 @@ st.header('Maps', divider = 'rainbow')
 st.markdown("""
     Below a map showing the repartition of the remarkable gardens on the French territory.
 """)
-map_1 = fl.Map(location = [gardens["latitude"].mean(), gardens["longitude"].mean()], tiles = "OpenStreetMap", zoom_start = 5, control_scale = True)
+map_1 = fl.Map(location = [gardens["latitude"].mean(), gardens["longitude"].mean()], zoom_start = 5, control_scale = True)
 fl.TileLayer('openstreetmap').add_to(map_1) # actually this is the tile option by default, but we show it as an example
 clusters = fl.plugins.MarkerCluster().add_to(map_1)
 for index, location_info in gardens.iterrows():
@@ -101,7 +101,7 @@ gardens_per_dpt = gardens.groupby(['Department'], as_index = False).size()
 gardens_per_dpt.rename(columns = {"size": "Number of gardens"}, inplace = True)
 gardens_per_dpt = dpts_data.merge(gardens_per_dpt, left_on = "nom", right_on = "Department")
 gardens_per_dpt = gardens_per_dpt[["Department", "Number of gardens", "geometry"]]
-map_2 = fl.Map(location = [gardens["latitude"].mean(), gardens["longitude"].mean()], tiles = "OpenStreetMap", zoom_start = 5, control_scale = True)
+map_2 = fl.Map(location = [gardens["latitude"].mean(), gardens["longitude"].mean()], zoom_start = 5, control_scale = True)
 fl.TileLayer('cartodbpositron').add_to(map_2)
 fl.Choropleth(
     columns = ['Department', 'Number of gardens'],
@@ -135,6 +135,9 @@ folium_static(map_2)
 
 # creating the section with the full list of gardens
 st.header('Full list of gardens', divider = 'rainbow')
+st.markdown("""
+    The descriptions of the gardens in the table below is provide in French: this is a good occasion for you to practice it :wink:.
+""")
 with st.expander("Please click here to see the full list of the gardens, with detailed descriptions"):
     gardens_per_dpt = gardens[["Garden's name", "Description"]].copy()
     st.table(gardens_per_dpt.set_index(gardens_per_dpt.columns[0]))
