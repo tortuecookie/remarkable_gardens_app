@@ -91,7 +91,7 @@ for index, location_info in gardens.iterrows():
     <i> To know more: </i>: {location_info['site_internet_et_autres_liens']}
     """
     fl.Marker([location_info["latitude"], location_info["longitude"]], popup = fl.Popup(text, max_width = 400)).add_to(clusters)
-folium_static(map_1, height = 550)
+folium_static(map_1)
 
 # creating the second map
 st.markdown("""
@@ -131,7 +131,7 @@ dpts_borders = fl.features.GeoJson(
 map_2.add_child(dpts_borders)
 map_2.keep_in_front(dpts_borders)
 fl.LayerControl().add_to(map_2)
-folium_static(map_2, height = 550)
+folium_static(map_2)
 
 # creating the section with the full list of gardens
 st.header('Full list of gardens', divider = 'rainbow')
